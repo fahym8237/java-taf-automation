@@ -53,4 +53,17 @@ public final class Config {
     public boolean headless() {
         return Boolean.parseBoolean(getOrDefault(ConfigKeys.HEADLESS, "false").trim());
     }
+    
+    public boolean remoteEnabled() {
+        return Boolean.parseBoolean(getOrDefault(ConfigKeys.REMOTE_ENABLED, "false").trim());
+    }
+
+    public String remoteUrl() {
+        return getOrDefault(ConfigKeys.REMOTE_URL, "http://localhost:4444/wd/hub").trim();
+    }
+
+    public String executionTargetOverride() {
+        return getOrDefault(ConfigKeys.EXECUTION_TARGET, "").trim();
+    }
+
 }

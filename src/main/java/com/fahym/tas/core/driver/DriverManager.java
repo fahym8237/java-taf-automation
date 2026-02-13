@@ -2,11 +2,12 @@ package com.fahym.tas.core.driver;
 
 import com.fahym.tas.core.config.Config;
 import com.fahym.tas.core.utils.Exceptions;
-
+import com.fahym.tas.infra.browser.BrowserProvider;
+import com.fahym.tas.infra.browser.LocalBrowserProvider;
+import com.fahym.tas.infra.execution.ExecutionResolver;
+import com.fahym.tas.infra.execution.ExecutionStrategy;
+import com.fahym.tas.infra.execution.ExecutionTarget;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 public final class DriverManager {
     private DriverManager() {}
@@ -16,30 +17,20 @@ public final class DriverManager {
     public static void createDriverIfNeeded(Config cfg) {
         if (DRIVER.get() != null) return;
 
-        String browser = cfg.browser();
-        boolean headless = cfg.headless();
+        ExecutionStrategy strategy = new ExecutionResolver().resolve(cfg);
+        BrowserProvider provider = providerFor(strategy.target());
 
-        WebDriver driver;
-        switch (browser) {
-            case "chrome" -> {
-                ChromeOptions options = new ChromeOptions();
-                if (headless) options.addArguments("--headless=new");
-                driver = new org.openqa.selenium.chrome.ChromeDriver(options);
-            }
-            case "firefox" -> {
-                FirefoxOptions options = new FirefoxOptions();
-                if (headless) options.addArguments("-headless");
-                driver = new org.openqa.selenium.firefox.FirefoxDriver(options);
-            }
-            case "edge" -> {
-                EdgeOptions options = new EdgeOptions();
-                if (headless) options.addArguments("--headless=new");
-                driver = new org.openqa.selenium.edge.EdgeDriver(options);
-            }
-            default -> throw Exceptions.illegalState("Unsupported browser: " + browser + " (use chrome|firefox|edge)");
-        }
-
+        WebDriver driver = provider.create(cfg, strategy);
         DRIVER.set(driver);
+    }
+
+    private static BrowserProvider providerFor(ExecutionTarget target) {
+        // Pilot: LOCAL only; GRID/CLOUD will be added in next iterations
+        return switch (target) {
+            case LOCAL -> new LocalBrowserProvider();
+            case GRID, CLOUD -> throw Exceptions.illegalState(
+                    "Remote execution not implemented yet. Set remote.enabled=false or execution.target=local");
+        };
     }
 
     public static WebDriver getDriver() {

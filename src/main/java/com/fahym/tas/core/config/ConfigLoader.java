@@ -61,6 +61,9 @@ public final class ConfigLoader {
         m.putIfAbsent(ConfigKeys.BROWSER, "chrome");
         m.putIfAbsent(ConfigKeys.HEADLESS, "false");
         m.putIfAbsent(ConfigKeys.TIMEOUTS_SECONDS, "10");
+        
+        m.putIfAbsent(ConfigKeys.REMOTE_ENABLED, "false");
+        m.putIfAbsent(ConfigKeys.REMOTE_URL, "http://localhost:4444/wd/hub");
     }
 
     private static void require(Map<String, String> m, String key) {
