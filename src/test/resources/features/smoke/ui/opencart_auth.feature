@@ -1,4 +1,4 @@
-@ui @smoke @REQ-1001
+@ui @smoke @regression @REQ-1001
 Feature: OpenCart Authentication - Forgotten Password
   As a visitor
   I want to request a password reset

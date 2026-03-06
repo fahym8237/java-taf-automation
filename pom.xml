@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.fahym</groupId>
-  <artifactId>java-taf-automation</artifactId>
+  <artifactId>tas-automation</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>java-taf-automation</name>
 
@@ -14,8 +14,23 @@
 
     <selenium.version>4.23.1</selenium.version>
     <junit.jupiter.version>5.10.3</junit.jupiter.version>
+    <junit.platform.suite.version>1.10.3</junit.platform.suite.version>
+    <cucumber.version>7.18.1</cucumber.version>
     <assertj.version>3.26.3</assertj.version>
     <slf4j.version>2.0.13</slf4j.version>
+
+    <!-- Default runner (can be overridden by profiles) -->
+    <test.runner>com.fahym.tas.runners.CucumberSmokeRunnerTest</test.runner>
+
+    <!-- Default system properties (can be overridden by profiles/CLI) -->
+    <env>local</env>
+    <browser>chrome</browser>
+    <headless>false</headless>
+    <remote.enabled>false</remote.enabled>
+    <remote.url>http://localhost:4444/wd/hub</remote.url>
+
+    <!-- Optional: later switch to using Suite runner + external tags -->
+    <cucumber.filter.tags></cucumber.filter.tags>
   </properties>
 
   <dependencies>
@@ -34,6 +49,29 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- JUnit Platform Suite API (for @Suite runner annotations) -->
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-suite</artifactId>
+      <version>${junit.platform.suite.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Cucumber (JUnit Platform / JUnit 5) -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit-platform-engine</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Assertions -->
     <dependency>
       <groupId>org.assertj</groupId>
@@ -49,37 +87,13 @@
       <version>${slf4j.version}</version>
     </dependency>
 
-    <!-- Simple logger for now (we’ll upgrade at the Observability layer to logback) -->
+    <!-- Simple logger for now (upgrade to logback at Layer I) -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
-    
-    <!-- Cucumber (JUnit Platform / JUnit 5) -->
-	<dependency>
-	  <groupId>io.cucumber</groupId>
-	  <artifactId>cucumber-java</artifactId>
-	  <version>7.18.1</version>
-	  <scope>test</scope>
-	</dependency>
-	
-	<dependency>
-	  <groupId>io.cucumber</groupId>
-	  <artifactId>cucumber-junit-platform-engine</artifactId>
-	  <version>7.18.1</version>
-	  <scope>test</scope>
-	</dependency>
-	
-	<dependency>
-	  <groupId>org.junit.platform</groupId>
-	  <artifactId>junit-platform-suite</artifactId>
-	  <version>1.10.3</version>
-	  <scope>test</scope>
-	</dependency>
-
-    
   </dependencies>
 
   <build>
@@ -90,8 +104,73 @@
         <version>3.3.1</version>
         <configuration>
           <useModulePath>false</useModulePath>
+
+          <!-- Run exactly the configured runner class -->
+          <test>${test.runner}</test>
+
+          <!-- Pass TAS config into the test JVM -->
+          <systemPropertyVariables>
+            <env>${env}</env>
+            <browser>${browser}</browser>
+            <headless>${headless}</headless>
+
+            <remote.enabled>${remote.enabled}</remote.enabled>
+            <remote.url>${remote.url}</remote.url>
+
+            <!-- Only used to run Suite runner and pass tags externally -->
+            <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- Local Smoke -->
+    <profile>
+      <id>local-smoke</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberSmokeRunnerTest</test.runner>
+        <env>local</env>
+        <browser>chrome</browser>
+        <headless>false</headless>
+        <remote.enabled>false</remote.enabled>
+      </properties>
+    </profile>
+
+    <!-- Local Regression -->
+    <profile>
+      <id>local-regression</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberRegressionRunnerTest</test.runner>
+        <env>local</env>
+        <browser>chrome</browser>
+        <headless>true</headless>
+        <remote.enabled>false</remote.enabled>
+      </properties>
+    </profile>
+
+    <!-- Local API (for later API pilot) -->
+    <profile>
+      <id>local-api</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberApiRunnerTest</test.runner>
+        <env>local</env>
+        <remote.enabled>false</remote.enabled>
+      </properties>
+    </profile>
+
+    <!-- Suite (runs all features unless runner/CLI filters tags) -->
+    <profile>
+      <id>suite</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberSuiteRunnerTest</test.runner>
+        <env>local</env>
+        <browser>chrome</browser>
+        <headless>true</headless>
+        <remote.enabled>false</remote.enabled>
+      </properties>
+    </profile>
+  </profiles>
+
 </project>
