@@ -37,7 +37,7 @@ public class OpenCartAuthSteps {
 
     @Then("the email validation error should be displayed")
     public void assertEmailErrorDisplayed() {
-        assertThat(forgottenPage.isEmailErrorVisible()).isTrue();
-        // assertThat(false).isTrue(); // force failure to test if the Failure Screenshot are generated in target/cucumber/cucumber.html
+    	//assertThat(forgottenPage.isEmailErrorVisible()).isTrue();
+         assertThat(false).isTrue(); // force failure to test if the Failure Screenshot are generated in target/cucumber/cucumber.html
     }
 }
