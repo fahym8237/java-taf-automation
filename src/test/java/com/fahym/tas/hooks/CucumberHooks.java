@@ -3,6 +3,9 @@ package com.fahym.tas.hooks;
 import com.fahym.tas.core.config.Config;
 import com.fahym.tas.core.config.ConfigLoader;
 import com.fahym.tas.core.driver.DriverManager;
+import com.fahym.tas.governance.policy.GovernanceConfig;
+import com.fahym.tas.governance.qualitygates.GateReporter;
+import com.fahym.tas.governance.qualitygates.GateRunner;
 import com.fahym.tas.observability.attachments.HtmlDumpService;
 import com.fahym.tas.observability.attachments.ScreenshotService;
 import com.fahym.tas.steps.context.ScenarioContextProvider;
@@ -18,6 +21,32 @@ public class CucumberHooks {
     private static final Logger log = LoggerFactory.getLogger(CucumberHooks.class);
 
     private Config cfg;
+
+    @Before(order = 5)
+	public void governanceBeforeScenario(Scenario scenario) {
+	    // Convert Collection -> Set to match GateRunner API and ensure uniqueness
+	    java.util.Set<String> tags = new java.util.HashSet<>(scenario.getSourceTagNames());
+	
+	    GovernanceConfig gov = GovernanceConfig.fromSystem();
+	    GateRunner runner = new GateRunner();
+	
+	    java.util.List<com.fahym.tas.governance.qualitygates.GateResult> results =
+	            runner.evaluate(tags, gov);
+	
+	    // Record results for reporting
+	    GateReporter.record(scenario.getName(), scenario.getId(), results);
+	
+	    // Fail fast if violations exist
+	    if (!GateRunner.allPassed(results)) {
+	        java.util.List<String> violations = GateRunner.allViolations(results);
+	
+	        throw new IllegalStateException(
+	                "Governance gate failure for scenario: " + scenario.getName()
+	                        + System.lineSeparator()
+	                        + String.join(System.lineSeparator(), violations)
+	        );
+	    }
+	}
 
     @Before(order = 10)
     public void beforeScenario(Scenario scenario) {
@@ -61,5 +90,15 @@ public class CucumberHooks {
             DriverManager.quitDriver();
         }
         ScenarioContextProvider.dispose();
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        try {
+            var file = GateReporter.flushToDisk();
+            LoggerFactory.getLogger(CucumberHooks.class).info("Governance gate report written: {}", file);
+        } catch (Exception e) {
+            LoggerFactory.getLogger(CucumberHooks.class).warn("Failed to write governance gate report", e);
+        }
     }
 }
