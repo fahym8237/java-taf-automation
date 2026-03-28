@@ -64,6 +64,7 @@ public final class ConfigLoader {
         
         m.putIfAbsent(ConfigKeys.REMOTE_ENABLED, "false");
         m.putIfAbsent(ConfigKeys.REMOTE_URL, "http://localhost:4444/wd/hub");
+        m.putIfAbsent(ConfigKeys.API_BASE_URL, "https://restful-booker.herokuapp.com");
     }
 
     private static void require(Map<String, String> m, String key) {
