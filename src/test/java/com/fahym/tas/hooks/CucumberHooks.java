@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 
+import com.fahym.tas.observability.api.ApiCallRecorder;
+import com.fahym.tas.observability.api.ApiEvidenceWriter;
+
 public class CucumberHooks {
 
     private static final Logger log = LoggerFactory.getLogger(CucumberHooks.class);
@@ -26,9 +29,9 @@ public class CucumberHooks {
 	public void governanceBeforeScenario(Scenario scenario) {
 	    // Convert Collection -> Set to match GateRunner API and ensure uniqueness
 	    java.util.Set<String> tags = new java.util.HashSet<>(scenario.getSourceTagNames());
-	
+	    
 	    GovernanceConfig gov = GovernanceConfig.fromSystem();
-	    GateRunner runner = new GateRunner();
+	    GateRunner runner = new GateRunner(); 
 	
 	    java.util.List<com.fahym.tas.governance.qualitygates.GateResult> results =
 	            runner.evaluate(tags, gov);
@@ -52,6 +55,7 @@ public class CucumberHooks {
     public void beforeScenario(Scenario scenario) {
         ScenarioContextProvider.init();
         cfg = ConfigLoader.load();
+        ApiCallRecorder.clear();
 
         log.info("START Scenario: {} | Tags: {}", scenario.getName(), scenario.getSourceTagNames());
 
@@ -61,26 +65,39 @@ public class CucumberHooks {
     }
 
     @AfterStep(order = 90)
-    public void afterStep(Scenario scenario) {
-        if (!scenario.isFailed()) return;
-        if (!scenario.getSourceTagNames().contains("@ui")) return;
-        if (!DriverManager.hasDriver()) return;
+	public void afterStep(Scenario scenario) {
+	    if (!scenario.isFailed()) return;
+	
+	    String scenarioId = scenario.getId().replaceAll("[^a-zA-Z0-9._-]+", "_");
+	
+	    // --- API failure evidence ---
+	    if (scenario.getSourceTagNames().contains("@api")
+	            && com.fahym.tas.observability.api.ApiCallRecorder.hasLast()) {
+	
+	        var ex = com.fahym.tas.observability.api.ApiCallRecorder.last();
+	
+	        // Persist request/response on disk
+	        var responseFile = com.fahym.tas.observability.api.ApiEvidenceWriter.writeLastExchange(scenarioId, ex);
+	        log.info("Saved API evidence (last response): {}", responseFile);
+	
+	        // Attach readable summary to Cucumber report
+	        String summary = com.fahym.tas.observability.api.ApiEvidenceWriter.toReadableSummary(ex);
+	        scenario.attach(summary.getBytes(java.nio.charset.StandardCharsets.UTF_8),
+	                "text/plain", "API Last Exchange");
+	    }
 
-        // Use deterministic scenario id for filenames
-        String scenarioId = scenario.getId().replaceAll("[^a-zA-Z0-9._-]+", "_");
-
-        // 1) Persist screenshot on disk
-        Path pngPath = ScreenshotService.captureToDisk(scenarioId, "failure");
-        log.info("Saved screenshot: {}", pngPath);
-
-        // 2) Persist page source on disk
-        Path htmlPath = HtmlDumpService.dumpPageSource(scenarioId, "page");
-        log.info("Saved page source: {}", htmlPath);
-
-        // 3) Attach screenshot to Cucumber report as before
-        byte[] pngBytes = ScreenshotService.captureBytes();
-        scenario.attach(pngBytes, "image/png", "Failure Screenshot");
-    }
+	    // --- UI failure evidence ---
+	    if (scenario.getSourceTagNames().contains("@ui") && DriverManager.hasDriver()) {
+	        Path pngPath = ScreenshotService.captureToDisk(scenarioId, "failure");
+	        log.info("Saved screenshot: {}", pngPath);
+	
+	        Path htmlPath = HtmlDumpService.dumpPageSource(scenarioId, "page");
+	        log.info("Saved page source: {}", htmlPath);
+	
+	        byte[] pngBytes = ScreenshotService.captureBytes();
+	        scenario.attach(pngBytes, "image/png", "Failure Screenshot");
+	    }
+}
 
     @After(order = 100)
     public void afterScenario(Scenario scenario) {

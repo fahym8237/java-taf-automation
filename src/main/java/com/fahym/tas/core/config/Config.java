@@ -65,5 +65,9 @@ public final class Config {
     public String executionTargetOverride() {
         return getOrDefault(ConfigKeys.EXECUTION_TARGET, "").trim();
     }
+    
+    public String apiBaseUrl() {
+        return get(ConfigKeys.API_BASE_URL).trim();
+    }
 
 }

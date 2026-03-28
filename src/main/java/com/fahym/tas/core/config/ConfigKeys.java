@@ -12,6 +12,8 @@ public final class ConfigKeys {
 
     public static final String TIMEOUTS_SECONDS = "timeouts.seconds";
     
+    public static final String API_BASE_URL = "api.base.url";
+    
     // Infrastructure Abstraction Layer Imp
     public static final String REMOTE_ENABLED = "remote.enabled";
     public static final String REMOTE_URL = "remote.url";
