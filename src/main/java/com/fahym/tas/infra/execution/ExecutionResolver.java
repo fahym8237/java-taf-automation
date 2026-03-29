@@ -6,9 +6,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+// decides which target to use based on configuration.
 public final class ExecutionResolver {
     public ExecutionStrategy resolve(Config cfg) {
-        // Allow explicit override via execution.target
+        // Allow explicit override via execution.target from application.properties 
         ExecutionTarget target = ExecutionTarget.from(cfg.executionTargetOverride());
 
         // If no override, derive from remote.enabled
@@ -20,7 +21,7 @@ public final class ExecutionResolver {
         if (target.isRemote()) remoteUrl = URI.create(cfg.remoteUrl());
 
         Map<String, Object> caps = new HashMap<>();
-        // keep empty for pilot; later Layer E will enrich caps via policy (platform, version, vendor labels, etc.)
+        
 
         return new ExecutionStrategy(target, remoteUrl, caps);
     }

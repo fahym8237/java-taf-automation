@@ -6,6 +6,18 @@ import com.fahym.tas.core.api.restassured.RestAssuredClient;
 import com.fahym.tas.domain.api.booker.config.BookerPaths;
 import com.fahym.tas.domain.api.booker.models.Booking;
 
+
+/**
+ * Provides booking-related API operations for the booker domain.
+ *
+ * This client is responsible for building and executing low-level CRUD requests
+ * against booking endpoints, including create, get, update, patch, and delete.
+ * It returns raw ApiResponse objects so that higher layers can decide how to
+ * validate or parse the result.
+ *
+ * Main interaction:
+ *   BookingFlow / tests -> BookingClient -> RestAssuredClient -> /booking endpoints
+ */
 public final class BookingClient {
 
     private final RestAssuredClient client;

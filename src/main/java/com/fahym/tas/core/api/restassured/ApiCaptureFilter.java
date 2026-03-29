@@ -11,6 +11,25 @@ import io.restassured.response.Response;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+
+/**
+ * RestAssured filter that intercepts API calls to capture request and response data.
+ *
+ * This filter records the full API exchange, including the request method,
+ * URI, headers, body, response status code, response headers, and response body.
+ * The captured data is forwarded to the ApiCallRecorder for storage and
+ * observability purposes.
+ *
+ * The filter is automatically applied to all API requests through the
+ * RequestSpecification created by RestAssuredSpecFactory.
+ *
+ * This mechanism allows the framework to collect API interaction evidence
+ * for debugging, reporting, and test traceability without affecting the
+ * execution of the HTTP request itself.
+ *
+ * Typical flow:
+ *   RestAssuredClient -> ApiCaptureFilter -> HTTP execution -> ApiCallRecorder
+ */
 public final class ApiCaptureFilter implements Filter {
 
     @Override

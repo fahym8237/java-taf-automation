@@ -1,5 +1,16 @@
 package com.fahym.tas.domain.api.booker.models;
 
+/**
+ * Represents a booking entity in the booker API domain.
+ *
+ * This model contains the main booking data exchanged with booking endpoints,
+ * including customer names, pricing information, deposit status, booking dates,
+ * and additional needs. It is used both as a request payload and as a response
+ * model in create, get, and update operations.
+ *
+ * Main interaction:
+ *   BookingClient / BookingFlow / test data factories -> Booking
+ */
 public final class Booking {
     private String firstname;
     private String lastname;

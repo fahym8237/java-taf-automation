@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
 
 import com.fahym.tas.observability.api.ApiCallRecorder;
-import com.fahym.tas.observability.api.ApiEvidenceWriter;
+import io.qameta.allure.Allure;
 
 public class CucumberHooks {
 
@@ -56,12 +56,27 @@ public class CucumberHooks {
         ScenarioContextProvider.init();
         cfg = ConfigLoader.load();
         ApiCallRecorder.clear();
+        boolean allureMetadataWritten = false;
 
         log.info("START Scenario: {} | Tags: {}", scenario.getName(), scenario.getSourceTagNames());
 
         if (scenario.getSourceTagNames().contains("@ui")) {
             DriverManager.createDriverIfNeeded(cfg);
         }
+        
+        if (!allureMetadataWritten) {
+            synchronized (CucumberHooks.class) {
+                if (!allureMetadataWritten) {
+                    com.fahym.tas.observability.allure.AllureMetadataWriter.writeEnvironment(cfg);
+                    com.fahym.tas.observability.allure.AllureMetadataWriter.writeExecutor();
+                    allureMetadataWritten = true;
+                }
+            }
+        }
+        com.fahym.tas.observability.allure.AllureLabeler.applyLabels(scenario);
+        com.fahym.tas.observability.allure.AllureMetadataWriter.writeEnvironment(cfg);
+        com.fahym.tas.observability.allure.AllureMetadataWriter.writeExecutor();
+        com.fahym.tas.observability.allure.AllureMetadataWriter.copyCategoriesIfPresent();
     }
 
     @AfterStep(order = 90)
@@ -82,8 +97,17 @@ public class CucumberHooks {
 	
 	        // Attach readable summary to Cucumber report
 	        String summary = com.fahym.tas.observability.api.ApiEvidenceWriter.toReadableSummary(ex);
-	        scenario.attach(summary.getBytes(java.nio.charset.StandardCharsets.UTF_8),
-	                "text/plain", "API Last Exchange");
+	       // scenario.attach(summary.getBytes(java.nio.charset.StandardCharsets.UTF_8),"text/plain", "API Last Exchange");
+	        
+	        //Allure.addAttachment("API Last Exchange", "text/plain", summary, ".txt");
+	        //Allure.addAttachment("API Last Request", "application/json", ex.requestBody(), ".json");
+	       //Allure.addAttachment("API Last Response", "application/json", ex.responseBody(), ".json");
+	        
+	        io.qameta.allure.Allure.addAttachment("API Last Exchange", "text/plain", summary, ".txt");
+	        io.qameta.allure.Allure.addAttachment("API Last Request", "application/json",
+	                ex.requestBody() == null ? "" : ex.requestBody(), ".json");
+	        io.qameta.allure.Allure.addAttachment("API Last Response", "application/json",
+	                ex.responseBody() == null ? "" : ex.responseBody(), ".json");
 	    }
 
 	    // --- UI failure evidence ---
@@ -95,7 +119,22 @@ public class CucumberHooks {
 	        log.info("Saved page source: {}", htmlPath);
 	
 	        byte[] pngBytes = ScreenshotService.captureBytes();
-	        scenario.attach(pngBytes, "image/png", "Failure Screenshot");
+	       // scenario.attach(pngBytes, "image/png", "Failure Screenshot");
+	        
+	        //Allure.addAttachment("Failure Screenshot", "image/png", new java.io.ByteArrayInputStream(pngBytes), ".png");
+	        
+	        io.qameta.allure.Allure.addAttachment(
+	                "Failure Screenshot",
+	                "image/png",
+	                new java.io.ByteArrayInputStream(pngBytes),
+	                ".png"
+	        );
+	        
+	        String html = DriverManager.getDriver().getPageSource();
+	       // Allure.addAttachment("Page Source", "text/html", html, ".html");
+	        io.qameta.allure.Allure.addAttachment("Page Source", "text/html", html, ".html");
+	        
+	        
 	    }
 }
 

@@ -66,23 +66,21 @@ public final class OpenCartRegisterPage extends BasePage {
         return this;
     }
 
-    public OpenCartRegisterPage submit() {
-        ui.click(continueButton);
-        return this;
-    }
+    public OpenCartRegisterPage submit() { ui.submit(continueButton);return this;} 
+    public OpenCartRegisterPage acceptAlert() {ui.acceptAlert(); return this;};
 
     public boolean isPrivacyPolicyLinkVisible() { return ui.isVisible(privacyPolicyLink); }
     public boolean isLoginLinkVisible() { return ui.isVisible(loginPageLink); }
 
-    public boolean isFirstNameErrorVisible() { return ui.isVisible(firstNameError); }
+    public boolean isFirstNameErrorVisible() { return ui.isVisibleNow(firstNameError); }
     public String firstNameErrorText() { return ui.text(firstNameError); }
 
-    public boolean isLastNameErrorVisible() { return ui.isVisible(lastNameError); }
+    public boolean isLastNameErrorVisible() { return ui.isVisibleNow(lastNameError); }
     public String lastNameErrorText() { return ui.text(lastNameError); }
 
-    public boolean isEmailErrorVisible() { return ui.isVisible(emailError); }
+    public boolean isEmailErrorVisible() { return ui.isVisibleNow(emailError); }
     public String emailErrorText() { return ui.text(emailError); }
 
-    public boolean isPasswordErrorVisible() { return ui.isVisible(passwordError); }
+    public boolean isPasswordErrorVisible() { return ui.isVisibleNow(passwordError); }
     public String passwordErrorText() { return ui.text(passwordError); }
 }

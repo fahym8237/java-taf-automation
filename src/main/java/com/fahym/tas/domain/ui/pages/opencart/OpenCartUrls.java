@@ -3,7 +3,7 @@ package com.fahym.tas.domain.ui.pages.opencart;
 public final class OpenCartUrls {
     private OpenCartUrls() {}
 
-    public static final String LOGIN = "file:///home/fahym/Documents/auth-prototype/login.html";
-    public static final String FORGOTTEN = "file:///home/fahym/Documents/auth-prototype/forgot-password.html";
-    public static final String REGISTER = "file:///home/fahym/Documents/auth-prototype/register.html";
+    public static final String LOGIN = "https://fahym8237.github.io/auth-app/login.html";
+    public static final String FORGOTTEN = "https://fahym8237.github.io/auth-app/forgot-password.html";
+    public static final String REGISTER = "https://fahym8237.github.io/auth-app/register.html";
 }

@@ -17,7 +17,7 @@ public final class Config {
         return v;
     }
 
-    //If the key exists,returns the associated value, if not  it returns the defaultValue you provide instead
+    //If the key exists,returns the associated value, if not  it returns the defaultValue provided instead
     public String getOrDefault(String key, String defaultValue) {
         return values.getOrDefault(key, defaultValue);
     }
@@ -32,6 +32,7 @@ public final class Config {
         return Integer.parseInt(get(key).trim());
     }
 
+    //_____________Impl_____________
     //returns a Duration based on a config key.
     public Duration timeout() {
         return Duration.ofSeconds(getInt(ConfigKeys.TIMEOUTS_SECONDS));

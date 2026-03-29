@@ -8,6 +8,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
+/**
+ * Encapsulates higher-level booking business flows built on top of API clients.
+ *
+ * This class orchestrates authentication and booking operations into reusable
+ * business-level actions, such as creating a booking and returning its ID,
+ * retrieving a booking as a typed model, or updating and deleting a booking
+ * with built-in success validation. It hides low-level response handling from
+ * the step definitions.
+ *
+ * Main interaction:
+ *   Step definitions -> BookingFlow -> AuthClient / BookingClient
+ */
 public final class BookingFlow {
 
     private final AuthClient auth;

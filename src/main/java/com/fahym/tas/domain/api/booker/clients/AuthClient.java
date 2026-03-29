@@ -8,6 +8,16 @@ import com.fahym.tas.domain.api.booker.models.AuthRequest;
 import com.fahym.tas.domain.api.booker.models.AuthResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Provides authentication-related API operations for the booker domain.
+ *
+ * This client builds and sends requests to the /auth endpoint using RestAssuredClient.
+ * It supports both raw response access and higher-level token extraction by parsing
+ * the authentication response into domain models.
+ *
+ * Main interaction:
+ *   BookingFlow / tests -> AuthClient -> RestAssuredClient -> /auth endpoint
+ */
 public final class AuthClient {
 
     private final RestAssuredClient client;
