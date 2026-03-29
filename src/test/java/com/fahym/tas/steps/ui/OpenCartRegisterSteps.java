@@ -16,6 +16,7 @@ public class OpenCartRegisterSteps {
 
     private OpenCartRegisterPage registerPage;
     private UserData generatedUser;
+    
 
     @Given("the user opens the OpenCart register page")
     public void openRegisterPage() {
@@ -49,6 +50,11 @@ public class OpenCartRegisterSteps {
     public void submitRegistrationForm() {
         registerPage.submit();
     }
+    
+    @When("the user accept the registration alert")
+    public void acceptRegistrationAlert() {
+    	registerPage.acceptAlert();
+    }
 
     @Then("no mandatory field validation errors should be displayed")
     public void assertNoMandatoryErrors() {
@@ -58,8 +64,9 @@ public class OpenCartRegisterSteps {
         assertThat(registerPage.isEmailErrorVisible()).isFalse();
         assertThat(registerPage.isPasswordErrorVisible()).isFalse();
     }
-
-    // Keep your existing negative scenario steps if you already have them:
+    
+    
+    
     @When("the user submits the registration form without filling any fields")
     public void submitEmptyRegisterForm() {
         registerPage.submit();

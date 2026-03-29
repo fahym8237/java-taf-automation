@@ -14,6 +14,17 @@ import io.cucumber.java.en.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * Defines Cucumber step implementations for Booker API CRUD scenarios.
+ *
+ * This class maps Gherkin steps to executable test logic by configuring the API
+ * client, invoking booking business flows, storing scenario state, and performing
+ * assertions on the results. It represents the BDD layer and delegates technical
+ * API details to lower layers such as BookingFlow and the domain clients.
+ *
+ * Main interaction:
+ *   Gherkin steps -> BookerCrudSteps -> BookingFlow
+ */
 public class BookerCrudSteps {
 
     private final Config cfg = ConfigLoader.load();
@@ -72,6 +83,7 @@ public class BookerCrudSteps {
 
     @Then("the booking should be updated successfully")
     public void bookingShouldBeUpdatedSuccessfully() {
+    	//bookingId = 11; // FORCE FAIL
         Booking fetched = flow.getBooking(bookingId);
         assertThat(fetched.getFirstname()).isEqualTo(putBooking.getFirstname());
         assertThat(fetched.getLastname()).isEqualTo(putBooking.getLastname());
@@ -93,7 +105,7 @@ public class BookerCrudSteps {
 
     @Then("the booking should reflect the patched fields")
     public void bookingShouldReflectPatchedFields() {
-        // already validated firstname in step above; keep a minimal guard here:
+        
         assertThat(lastFetched).isNotNull();
         assertThat(lastFetched.getFirstname()).startsWith("Patched_");
     }
@@ -105,10 +117,11 @@ public class BookerCrudSteps {
 
     @Then("the booking should not be retrievable anymore")
     public void bookingShouldNotBeRetrievableAnymore() {
+    	
         // We expect GET to fail (404) after delete, but our flow throws on non-200.
         // So we verify by calling client directly and checking status.
         var raw = new BookingClient(ra).getBookingRaw(bookingId);
         assertThat(raw.statusCode()).isEqualTo(404);
-        //assertThat(bookingId).isEqualTo(-1); // force test to failed
+       //assertThat(bookingId).isEqualTo(-1); // force test to failed
     }
 }

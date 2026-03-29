@@ -25,7 +25,7 @@ public final class DriverManager {
     }
 
     private static BrowserProvider providerFor(ExecutionTarget target) {
-        // Pilot: LOCAL only; GRID/CLOUD will be added in next iterations
+        // Pilot: LOCAL only;
         return switch (target) {
             case LOCAL -> new LocalBrowserProvider();
             case GRID, CLOUD -> throw Exceptions.illegalState(

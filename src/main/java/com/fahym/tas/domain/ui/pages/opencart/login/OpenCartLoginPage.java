@@ -5,6 +5,8 @@ import com.fahym.tas.domain.ui.pages.base.Locators;
 import com.fahym.tas.domain.ui.pages.base.UiActions;
 import com.fahym.tas.domain.ui.pages.opencart.OpenCartUrls;
 import com.fahym.tas.domain.ui.pages.opencart.forgotten.OpenCartForgottenPage;
+import com.fahym.tas.domain.ui.pages.opencart.register.OpenCartRegisterPage;
+
 import org.openqa.selenium.By;
 
 public final class OpenCartLoginPage extends BasePage {
@@ -15,6 +17,7 @@ public final class OpenCartLoginPage extends BasePage {
     private static final By passwordInput = Locators.id("input-password");
     private static final By loginButton = Locators.xpath("//button[normalize-space()='Login']");
     private static final By forgottenPasswordLink = Locators.linkText("Forgotten Password");
+    private static final By registerAccountLink = Locators.linkText("Register Account");
     private static final By returningCustomerHeader = Locators.xpath("//h2[normalize-space()='Returning Customer']");
 
     public OpenCartLoginPage(UiActions ui) {
@@ -22,7 +25,8 @@ public final class OpenCartLoginPage extends BasePage {
     }
 
     public OpenCartLoginPage open() {
-        ui.open(OpenCartUrls.LOGIN);
+       ui.open(OpenCartUrls.LOGIN);
+    	
         return this;
     }
 
@@ -47,7 +51,12 @@ public final class OpenCartLoginPage extends BasePage {
 
     public OpenCartForgottenPage goToForgottenPassword() {
         ui.click(forgottenPasswordLink);
-        return new OpenCartForgottenPage(ui);
+        return new OpenCartForgottenPage(ui);  
+    }
+    
+    public OpenCartRegisterPage goToRegisterAccount() {
+    	ui.click(registerAccountLink);
+    	return  new OpenCartRegisterPage(ui);
     }
 
     public String returningCustomerHeaderText() {

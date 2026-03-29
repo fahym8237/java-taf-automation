@@ -1,5 +1,6 @@
 package com.fahym.tas.infra.execution;
 
+//defines what kind of execution (local, grid, cloud).
 public enum ExecutionTarget {
     LOCAL, GRID, CLOUD;
 

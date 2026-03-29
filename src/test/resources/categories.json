@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Assertion Failures",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*Assertion.*|.*expect.*|.*isEqualTo.*"
+  },
+  {
+    "name": "UI Timeout / Synchronization",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*Timeout.*|.*Expected condition failed.*"
+  },
+  {
+    "name": "API Contract / Status Failures",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*Status=.*|.*Failed to parse.*|.*Auth failed.*"
+  }
+]

@@ -2,11 +2,29 @@ package com.fahym.tas.core.api.restassured;
 
 import com.fahym.tas.core.api.model.ApiRequest;
 import com.fahym.tas.core.api.model.ApiResponse;
-import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
 
+
+/**
+ * Executes API requests using RestAssured and converts them into framework-level responses.
+ *
+ * This class acts as the execution engine of the API layer. It receives ApiRequest
+ * objects created by the framework and translates them into RestAssured HTTP calls.
+ * After execution, the RestAssured response is wrapped into an ApiResponse object
+ * that can be used by higher layers of the test automation framework.
+ *
+ * The client supports common HTTP methods such as GET, POST, PUT, PATCH, and DELETE.
+ * All requests inherit shared configuration through a base RequestSpecification,
+ * typically created by the RestAssuredSpecFactory.
+ *
+ * Typical flow:
+ *   ApiRequest -> RestAssuredClient -> RestAssured HTTP execution -> ApiResponse
+ *
+ * This design centralizes all HTTP execution logic and prevents higher layers
+ * of the framework from directly depending on RestAssured.
+ */
 public final class RestAssuredClient {
 
     private final RequestSpecification baseSpec;

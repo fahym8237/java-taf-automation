@@ -17,7 +17,7 @@ public final class GridBrowserProvider implements BrowserProvider {
         // Minimal: let Selenium grid decide based on "browserName"
         caps.setCapability("browserName", cfg.browser());
 
-        // Add headless flags via options later (Layer E expansion)
+       
         try {
 			return new RemoteWebDriver(strategy.remoteUrl().toURL(), caps);
 		} catch (MalformedURLException e) {
