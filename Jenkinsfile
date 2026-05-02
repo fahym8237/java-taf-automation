@@ -7,6 +7,18 @@ pipeline {
 
     environment {
         XRAY_PROJECT_KEY = 'JAV'
+
+        LOGIN = 'https://demo.opencart.com/en-gb?route=account/login'
+        FORGOTTEN = 'https://demo.opencart.com/en-gb?route=account/forgotten'
+        REGISTER = 'https://demo.opencart.com/en-gb?route=account/register'
+
+        ACCOUNT = 'https://demo.opencart.com/en-gb?route=account/account'
+        EDIT_ACCOUNT = 'https://demo.opencart.com/en-gb?route=account/edit'
+        CHANGE_PASSWORD = 'https://demo.opencart.com/en-gb?route=account/password'
+        LOGOUT = 'https://demo.opencart.com/en-gb?route=account/logout'
+
+        HOME_PAGE = 'https://demo.opencart.com'
+        CHECKOUT = 'https://demo.opencart.com/index.php?route=checkout/checkout'
     }
 
     stages {
@@ -71,19 +83,7 @@ pipeline {
                 withCredentials([
                     string(credentialsId: 'login-password', variable: 'LOGIN_PASSWORD'),
                     string(credentialsId: 'login-email', variable: 'LOGIN_EMAIL'),
-                    string(credentialsId: 'login-new-password', variable: 'LOGIN_NEW_PASSWORD'),
-
-                    string(credentialsId: 'login-url', variable: 'LOGIN'),
-                    string(credentialsId: 'forgotten-url', variable: 'FORGOTTEN'),
-                    string(credentialsId: 'register-url', variable: 'REGISTER'),
-
-                    string(credentialsId: 'account-url', variable: 'ACCOUNT'),
-                    string(credentialsId: 'edit-account-url', variable: 'EDIT_ACCOUNT'),
-                    string(credentialsId: 'change-password-url', variable: 'CHANGE_PASSWORD'),
-                    string(credentialsId: 'logout-url', variable: 'LOGOUT'),
-
-                    string(credentialsId: 'home-page-url', variable: 'HOME_PAGE'),
-                    string(credentialsId: 'checkout-url', variable: 'CHECKOUT')
+                    string(credentialsId: 'login-new-password', variable: 'LOGIN_NEW_PASSWORD')
                 ]) {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                         sh '''
