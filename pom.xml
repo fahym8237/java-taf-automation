@@ -1,27 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.fahym</groupId>
-  <artifactId>tas-automation</artifactId>
+  <artifactId>java-test-automation</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>java-taf-automation</name>
+  <name>java-test-automation</name>
 
-  <dependencyManagement>
-  <dependencies>
-    <dependency>
-      <groupId>io.qameta.allure</groupId>
-      <artifactId>allure-bom</artifactId>
-      <version>${allure.version}</version>
-      <type>pom</type>
-      <scope>import</scope>
-    </dependency>
-  </dependencies>
-</dependencyManagement>
+  <!-- ===================== PROPERTIES ===================== -->
 
   <properties>
-    <maven.compiler.release>24</maven.compiler.release>
+    <maven.compiler.release>25</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <selenium.version>4.23.1</selenium.version>
@@ -31,28 +22,43 @@
     <assertj.version>3.26.3</assertj.version>
     <slf4j.version>2.0.13</slf4j.version>
 
-    <!-- Default runner (can be overridden by profiles) -->
+    <restassured.version>5.5.0</restassured.version>
+    <jackson.version>2.17.2</jackson.version>
+
+    <allure.version>2.29.1</allure.version>
+    <aspectj.version>1.9.22.1</aspectj.version>
+
+    <!-- Default runner -->
     <test.runner>com.fahym.tas.runners.CucumberSmokeRunnerTest</test.runner>
 
-    <!-- Default system properties (can be overridden by profiles/CLI) -->
+    <!-- Environment -->
     <env>local</env>
     <browser>chrome</browser>
     <headless>false</headless>
     <remote.enabled>false</remote.enabled>
     <remote.url>http://localhost:4444/wd/hub</remote.url>
 
-    <!-- Optional: later switch to using Suite runner + external tags -->
     <cucumber.filter.tags></cucumber.filter.tags>
-    
-    <restassured.version>5.5.0</restassured.version>
-  	<jackson.version>2.17.2</jackson.version>
-  	
-  	<allure.version>2.29.1</allure.version>
-	<aspectj.version>1.9.22.1</aspectj.version>
-  	
   </properties>
 
+  <!-- ===================== DEPENDENCY MANAGEMENT ===================== -->
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-bom</artifactId>
+        <version>${allure.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <!-- ===================== DEPENDENCIES ===================== -->
+
   <dependencies>
+
     <!-- Selenium -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -68,7 +74,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- JUnit Platform Suite API (for @Suite runner annotations) -->
+    <!-- JUnit Suite -->
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-suite</artifactId>
@@ -76,7 +82,7 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Cucumber (JUnit Platform / JUnit 5) -->
+    <!-- Cucumber -->
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
@@ -99,141 +105,151 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Logging API -->
+    <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
 
-    <!-- switching logging backend to Logback -->
     <dependency>
-	  <groupId>ch.qos.logback</groupId>
-	  <artifactId>logback-classic</artifactId>
-	  <version>1.5.6</version>
-	  <scope>test</scope>
-	</dependency>
-	
-	<!-- Rest Assured -->
-  <dependency>
-    <groupId>io.rest-assured</groupId>
-    <artifactId>rest-assured</artifactId>
-    <version>${restassured.version}</version>
-    
-  </dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.5.6</version>
+      <scope>test</scope>
+    </dependency>
 
-  <!-- JSON mapping -->
-  <dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>${jackson.version}</version>
-   
-  </dependency>
+    <!-- REST Assured -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${restassured.version}</version>
+    </dependency>
 
+    <!-- JSON -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
 
-   <dependency>
-  <groupId>io.qameta.allure</groupId>
-  <artifactId>allure-cucumber7-jvm</artifactId>
-  <scope>test</scope>
-</dependency>
+    <!-- Allure -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-cucumber7-jvm</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-   <dependency>
-  <groupId>io.qameta.allure</groupId>
-  <artifactId>allure-junit-platform</artifactId>
-  <scope>test</scope>
-</dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-junit-platform</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
+
+  <!-- ===================== BUILD ===================== -->
 
   <build>
     <plugins>
+
+      <!-- FIX: Compiler plugin (MANDATORY) -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <release>${maven.compiler.release}</release>
+        </configuration>
+      </plugin>
+
+      <!-- Test execution -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.3.1</version>
         <configuration>
           <useModulePath>false</useModulePath>
-
-          <!-- Run exactly the configured runner class -->
           <test>${test.runner}</test>
 
-          <!-- Pass TAS config into the test JVM -->
           <systemPropertyVariables>
             <env>${env}</env>
             <browser>${browser}</browser>
             <headless>${headless}</headless>
-
             <remote.enabled>${remote.enabled}</remote.enabled>
             <remote.url>${remote.url}</remote.url>
-
-            <!-- Only used to run Suite runner and pass tags externally -->
             <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
           </systemPropertyVariables>
         </configuration>
       </plugin>
-    	<plugin>
-		  <groupId>org.codehaus.mojo</groupId>
-		  <artifactId>exec-maven-plugin</artifactId>
-		  <version>3.5.0</version>
-		</plugin>
+
+      <!-- Optional -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+      </plugin>
+
     </plugins>
   </build>
 
+  <!-- ===================== PROFILES ===================== -->
+
   <profiles>
-    <!-- Local Smoke -->
-    <profile>
-      <id>local-smoke</id>
-      <properties>
-        <test.runner>com.fahym.tas.runners.CucumberSmokeRunnerTest</test.runner>
-        <env>local</env>
-        <browser>chrome</browser>
-        <headless>false</headless>
-        <remote.enabled>false</remote.enabled>
-      </properties>
-    </profile>
 
-    <!-- Local Regression -->
-    <profile>
-      <id>local-regression</id>
-      <properties>
-        <test.runner>com.fahym.tas.runners.CucumberRegressionRunnerTest</test.runner>
-        <env>local</env>
-        <browser>chrome</browser>
-        <headless>true</headless>
-        <remote.enabled>false</remote.enabled>
-      </properties>
-    </profile>
-
-    <!-- Local API  -->
-    <profile>
-      <id>local-api</id>
-      <properties>
-        <test.runner>com.fahym.tas.runners.CucumberApiRunnerTest</test.runner>
-        <env>local</env>
-        <remote.enabled>false</remote.enabled>
-      </properties>
-    </profile>
-    <!-- Local UI  -->
-    <profile>
-	  <id>local-ui</id>
-	  <properties>
-	    <test.runner>com.fahym.tas.runners.CucumberUiRunnerTest</test.runner>
-	    <browser>chrome</browser>
-	    <headless>false</headless>
-	    <remote.enabled>false</remote.enabled>
-	  </properties>
-	</profile>
-
-    <!-- Suite (runs all features unless runner/CLI filters tags) -->
     <profile>
       <id>suite</id>
       <properties>
         <test.runner>com.fahym.tas.runners.CucumberSuiteRunnerTest</test.runner>
-        <env>local</env>
-        <browser>chrome</browser>
-        <headless>true</headless>
-        <remote.enabled>false</remote.enabled>
       </properties>
     </profile>
+
+    <profile>
+      <id>ui</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberUiRunnerTest</test.runner>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>api</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberApiRunnerTest</test.runner>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>ui_smoke</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberUiSmokeRunnerTest</test.runner>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>ui_regression</id>
+      <properties>
+        <test.runner>com.fahym.tas.runners.CucumberUiRegressionRunnerTest</test.runner>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>local</id>
+      <properties>
+        <remote.enabled>false</remote.enabled>
+        <browser>chrome</browser>
+        <headless>false</headless>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>remote</id>
+      <properties>
+        <remote.enabled>true</remote.enabled>
+        <browser>chrome</browser>
+        <headless>true</headless>
+      </properties>
+    </profile>
+
   </profiles>
 
 </project>

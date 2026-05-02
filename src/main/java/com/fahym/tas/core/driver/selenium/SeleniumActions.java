@@ -45,7 +45,62 @@ public final class SeleniumActions {
      * Clicks an element after waiting for it to become clickable.
      */
     public void click(By locator) {
-        waits.untilClickable(locator).click();
+        int attempts = 0;
+        int maxAttempts = 3;
+
+        while (attempts < maxAttempts) {
+            try {
+                WebElement element = waits.untilVisible(locator);
+
+                // Scroll into view
+                scrollIntoView(element);
+
+                // Wait until clickable
+                waits.untilClickable(locator);
+
+                element.click();
+                return;
+
+            } catch (Exception e) {
+                attempts++;
+
+                if (attempts == maxAttempts) {
+                    // Fallback to JS click
+                    WebElement element = driver.findElement(locator);
+                    scrollIntoView(element);
+                    jsClick(element);
+                    return;
+                }
+            }
+        }
+    }
+    
+    public void click(WebElement element) {
+        int attempts = 0;
+        int maxAttempts = 3;
+
+        while (attempts < maxAttempts) {
+            try {
+                // Scroll into view
+                scrollIntoView(element);
+
+                // Wait until clickable (using element instead of locator)
+                waits.untilClickable(element);
+
+                element.click();
+                return;
+
+            } catch (Exception e) {
+                attempts++;
+
+                if (attempts == maxAttempts) {
+                    // Fallback to JS click
+                    scrollIntoView(element);
+                    jsClick(element);
+                    return;
+                }
+            }
+        }
     }
 
     /**
@@ -66,12 +121,25 @@ public final class SeleniumActions {
         el.clear();
         el.sendKeys(text);
     }
+    
+ // New overload (WebElement)
+    public void type(WebElement element, String text) {
+        // Wait until visible
+        waits.untilVisible(element);
+
+        element.clear();
+        element.sendKeys(text);
+    }
 
     /**
      * Clears the content of an input field.
      */
     public void clear(By locator) {
         waits.untilVisible(locator).clear();
+    }
+    
+    public void clear(WebElement el) {
+        waits.untilVisible(el).clear();
     }
 
     /**
@@ -118,15 +186,7 @@ public final class SeleniumActions {
         return driver.findElements(locator);
     }
 
-    /**
-     * Scrolls the page until the element is brought into view.
-     * The element is positioned near the center of the viewport.
-     */
-    public void scrollIntoView(By locator) {
-        WebElement el = waits.untilVisible(locator);
-        ((JavascriptExecutor) driver)
-                .executeScript("arguments[0].scrollIntoView({block:'center'});", el);
-    }
+   
 
     /**
      * Submits a form element.
@@ -237,4 +297,55 @@ public final class SeleniumActions {
         Alert alert = waits.untilAlertPresent();
         alert.dismiss();
     }
+    
+    /**
+     * Scrolls down the page by a specified number of pixels.
+     */
+    public void scrollDown(int pixels) {
+        ((JavascriptExecutor) driver)
+                .executeScript("window.scrollBy(0," + pixels + ");");
+    }
+
+    /**
+     * Scrolls to the bottom of the page.
+     */
+    public void scrollToBottom() {
+        ((JavascriptExecutor) driver)
+                .executeScript("window.scrollTo(0, document.body.scrollHeight);");
+    }
+
+    /**
+     * Scrolls the page until the element is brought into view.
+     */
+    public void scrollIntoView(By locator) {
+        WebElement el = waits.untilVisible(locator);
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].scrollIntoView({block:'center'});", el);
+    }
+    
+    public void scrollIntoViewAndClick(WebElement el) {
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].scrollIntoView({block:'center'});", el);
+
+        new Actions(driver).moveToElement(el).click().perform();
+    }
+
+
+
+
+    
+    public void scrollIntoView(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});",
+            element
+        );
+    }
+    
+    public void jsClick(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].click();", element
+        );
+    }
+
+
 }

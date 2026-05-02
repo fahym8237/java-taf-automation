@@ -37,7 +37,7 @@ public final class RestAssuredSpecFactory {
                 .setBaseUri(cfg.apiBaseUrl())
                 .setRelaxedHTTPSValidation()
                 .addHeader("Accept", "application/json")
-                .addFilter(new ApiCaptureFilter()) // ✅ capture last exchange per thread
+                .addFilter(new ApiCaptureFilter()) // capture last exchange per thread
                 .build();
     }
 }
