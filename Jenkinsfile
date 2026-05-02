@@ -8,17 +8,17 @@ pipeline {
     environment {
         XRAY_PROJECT_KEY = 'JAV'
 
-        LOGIN = 'https://demo.opencart.com/en-gb?route=account/login'
-        FORGOTTEN = 'https://demo.opencart.com/en-gb?route=account/forgotten'
-        REGISTER = 'https://demo.opencart.com/en-gb?route=account/register'
+        LOGIN = 'https://opencart.liveblog365.com/index.php?route=account/login&language=en-gb'
+        FORGOTTEN = 'https://opencart.liveblog365.com/index.php?route=account/forgotten&language=en-gb'
+        REGISTER = 'https://opencart.liveblog365.com/index.php?route=account/register&language=en-gb'
 
-        ACCOUNT = 'https://demo.opencart.com/en-gb?route=account/account'
-        EDIT_ACCOUNT = 'https://demo.opencart.com/en-gb?route=account/edit'
-        CHANGE_PASSWORD = 'https://demo.opencart.com/en-gb?route=account/password'
-        LOGOUT = 'https://demo.opencart.com/en-gb?route=account/logout'
+        ACCOUNT = 'https://opencart.liveblog365.com/index.php?route=account/account&language=en-gb'
+        EDIT_ACCOUNT = 'https://opencart.liveblog365.com/index.php?route=account/edit&language=en-gb'
+        CHANGE_PASSWORD = 'https://opencart.liveblog365.com/index.php?route=account/password&language=en-gb'
+        LOGOUT = 'https://opencart.liveblog365.com/index.php?route=account/logout&language=en-gb'
 
-        HOME_PAGE = 'https://demo.opencart.com'
-        CHECKOUT = 'https://demo.opencart.com/index.php?route=checkout/checkout'
+        HOME_PAGE = 'https://opencart.liveblog365.com/index.php?route=common/home&language=en-gb'
+        CHECKOUT = 'https://opencart.liveblog365.com/index.php?route=checkout/checkout&language=en-gb'
     }
 
     stages {
