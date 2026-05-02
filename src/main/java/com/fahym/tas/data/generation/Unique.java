@@ -12,11 +12,13 @@ public final class Unique {
     public static String email(String prefix) {
         // unique + traceable (runId embedded)
         String run = RunInfo.runId();
-        String local = sanitize(prefix) + "+" + run + "_" + suffix();
+        //String local = sanitize(prefix) + "+" + run + "_" + suffix();
+        String local =  run ;
         return local + "@example.test";
     }
 
-    private static String sanitize(String s) {
+    @SuppressWarnings("unused")
+	private static String sanitize(String s) {
         if (s == null || s.isBlank()) return "user";
         return s.trim().toLowerCase().replaceAll("[^a-z0-9]+", ".");
     }

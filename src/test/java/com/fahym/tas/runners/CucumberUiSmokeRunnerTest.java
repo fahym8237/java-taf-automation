@@ -11,6 +11,6 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.fahym.tas.steps,com.fahym.tas.hooks")
-@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@smoke and not @wip")
-public class CucumberSmokeRunnerTest {
+@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@smoke and @ui and not @wip")
+public class CucumberUiSmokeRunnerTest {
 }

@@ -25,13 +25,13 @@ public final class DriverManager {
     }
 
     private static BrowserProvider providerFor(ExecutionTarget target) {
-        // Pilot: LOCAL only;
-        return switch (target) {
-            case LOCAL -> new LocalBrowserProvider();
-            case GRID, CLOUD -> throw Exceptions.illegalState(
-                    "Remote execution not implemented yet. Set remote.enabled=false or execution.target=local");
-        };
-    }
+	    return switch (target) {
+	        case LOCAL -> new LocalBrowserProvider();
+	        case GRID -> new com.fahym.tas.infra.browser.GridBrowserProvider();
+	        case CLOUD -> throw Exceptions.illegalState(
+	                "Cloud execution not implemented yet.");
+	    };
+}
 
     public static WebDriver getDriver() {
         WebDriver d = DRIVER.get();

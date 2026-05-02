@@ -38,6 +38,12 @@ public final class SeleniumWaits {
         return new WebDriverWait(driver, timeout)
                 .until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+    
+ // New overload (WebElement)
+    public WebElement untilVisible(WebElement element) {
+        return new WebDriverWait(driver, timeout)
+                .until(ExpectedConditions.visibilityOf(element));
+    }
 
     /**
      * Wait until an element becomes clickable.
@@ -46,6 +52,14 @@ public final class SeleniumWaits {
     public WebElement untilClickable(By locator) {
         return new WebDriverWait(driver, timeout)
                 .until(ExpectedConditions.elementToBeClickable(locator));
+    }
+    
+    
+    
+ // New overload (WebElement)
+    public WebElement untilClickable(WebElement element) {
+        return new WebDriverWait(driver, timeout)
+                .until(ExpectedConditions.elementToBeClickable(element));
     }
 
     /**
