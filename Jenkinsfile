@@ -94,7 +94,7 @@ pipeline {
                               -e HOME_PAGE="$HOME_PAGE" \
                               -e CHECKOUT="$CHECKOUT" \
                               maven:3.9.9-eclipse-temurin-24 \
-                              mvn clean test -Pui,remote \
+                              mvn clean test -Psuite,remote \
                                 -Dremote.url=http://selenium-chrome:4444/wd/hub
                         '''
                     }
