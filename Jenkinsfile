@@ -6,7 +6,11 @@ pipeline {
     }
 
     environment {
+<<<<<<< HEAD
         XRAY_PROJECT_KEY = 'JAV'
+=======
+        XRAY_PROJECT_KEY = 'JAS'
+>>>>>>> 89e0acc (release: OpenCart UI automation v2.1.1)
 
         LOGIN = 'https://opencart.liveblog365.com/index.php?route=account/login&language=en-gb'
         FORGOTTEN = 'https://opencart.liveblog365.com/index.php?route=account/forgotten&language=en-gb'
@@ -50,9 +54,6 @@ pipeline {
                         export XRAY_EXECUTION_DESCRIPTION="API execution imported from TAS"
                         export XRAY_PROJECT_KEY="${XRAY_PROJECT_KEY}"
 
-                        mvn exec:java \
-                          -Dexec.mainClass=com.fahym.tas.integrations.xray.XrayUploader \
-                          -Dexec.classpathScope=test
                     '''
                 }
             }
@@ -129,9 +130,7 @@ pipeline {
                             export XRAY_EXECUTION_SUMMARY='TAS UI Smoke Run'
                             export XRAY_EXECUTION_DESCRIPTION='UI execution imported from TAS'
 
-                            mvn exec:java \
-                              -Dexec.mainClass=com.fahym.tas.integrations.xray.XrayUploader \
-                              -Dexec.classpathScope=test
+                        
                           "
                     '''
                 }
