@@ -31,37 +31,28 @@ pipeline {
         }
 
         stage('API Tests') {
-            agent {
-                docker {
-                    image 'maven:3.9.9-eclipse-temurin-24'
-                    args '-v $HOME/.m2:/root/.m2'
-                    reuseNode true
-                }
-            }
-
-            steps {
-                sh 'mvn clean test -Papi'
-
-                withCredentials([
-                    string(credentialsId: 'xray-client-id', variable: 'XRAY_CLIENT_ID'),
-                    string(credentialsId: 'xray-client-secret', variable: 'XRAY_CLIENT_SECRET')
-                ]) {
-                    sh '''
-                        export XRAY_EXECUTION_SUMMARY="TAS API Smoke Run"
-                        export XRAY_EXECUTION_DESCRIPTION="API execution imported from TAS"
-                        export XRAY_PROJECT_KEY="${XRAY_PROJECT_KEY}"
-
-                    '''
-                }
-            }
-
-            post {
-                always {
-                    stash name: 'api-surefire', includes: 'target/surefire-reports/**/*.xml', allowEmpty: true
-                    stash name: 'api-allure', includes: 'target/allure-results/**', allowEmpty: true
-                }
-            }
-        }
+		    agent {
+		        docker {
+		            image 'maven:3.9.9-eclipse-temurin-24'
+		            args '--entrypoint="" -v $HOME/.m2:/root/.m2'
+		            reuseNode true
+		        }
+		    }
+		
+		    steps {
+		        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+		            sh 'mvn clean test -Papi'
+		        }
+		    }
+		
+		    post {
+		        always {
+		            stash name: 'api-surefire', includes: 'target/surefire-reports/**/*.xml', allowEmpty: true
+		            stash name: 'api-allure', includes: 'target/allure-results/**', allowEmpty: true
+		            archiveArtifacts artifacts: 'target/api/**/*.json,target/allure-results/**', allowEmptyArchive: true
+		        }
+		    }
+		}
 
         stage('UI Tests') {
             steps {
@@ -142,22 +133,22 @@ pipeline {
         }
 
         stage('Publish Reports') {
-            steps {
-                unstash 'api-surefire'
-                unstash 'api-allure'
-                unstash 'ui-surefire'
-                unstash 'ui-allure'
-
-                junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
-
-                allure([
-                    includeProperties: false,
-                    jdk: '',
-                    commandline: 'allure',
-                    results: [[path: 'target/allure-results']]
-                ])
-            }
-        }
+		    steps {
+		        unstash 'api-surefire'
+		        unstash 'api-allure'
+		        unstash 'ui-surefire'
+		        unstash 'ui-allure'
+		
+		        junit testResults: 'target/surefire-reports/**/*.xml', allowEmptyResults: true
+		
+		        allure([
+		            includeProperties: false,
+		            jdk: '',
+		            commandline: 'allure',
+		            results: [[path: 'target/allure-results']]
+		        ])
+		    }
+		}
     }
 
     post {
