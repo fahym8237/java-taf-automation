@@ -39,6 +39,7 @@ pipeline {
                 docker {
                     image 'maven:3.9.9-eclipse-temurin-24'
                     args '-v $HOME/.m2:/root/.m2'
+                    reuseNode true
                 }
             }
 
@@ -92,7 +93,7 @@ pipeline {
                               --network tas-net \
                               --volumes-from jenkins \
                               -v /root/.m2:/root/.m2 \
-                              -w /var/jenkins_home/workspace/ob-tas-java \
+                              -w /var/jenkins_home/workspace/java-test-automation \
                               -e LOGIN_PASSWORD="$LOGIN_PASSWORD" \
                               -e LOGIN_EMAIL="$LOGIN_EMAIL" \
                               -e LOGIN_NEW_PASSWORD="$LOGIN_NEW_PASSWORD" \
