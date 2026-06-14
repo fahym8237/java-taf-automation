@@ -6,7 +6,19 @@ pipeline {
     }
 
     environment {
-        XRAY_PROJECT_KEY = 'JAV'
+        XRAY_PROJECT_KEY = 'JAS'
+
+        LOGIN = 'https://opencart.liveblog365.com/index.php?route=account/login&language=en-gb'
+        FORGOTTEN = 'https://opencart.liveblog365.com/index.php?route=account/forgotten&language=en-gb'
+        REGISTER = 'https://opencart.liveblog365.com/index.php?route=account/register&language=en-gb'
+
+        ACCOUNT = 'https://opencart.liveblog365.com/index.php?route=account/account&language=en-gb'
+        EDIT_ACCOUNT = 'https://opencart.liveblog365.com/index.php?route=account/edit&language=en-gb'
+        CHANGE_PASSWORD = 'https://opencart.liveblog365.com/index.php?route=account/password&language=en-gb'
+        LOGOUT = 'https://opencart.liveblog365.com/index.php?route=account/logout&language=en-gb'
+
+        HOME_PAGE = 'https://opencart.liveblog365.com/index.php?route=common/home&language=en-gb'
+        CHECKOUT = 'https://opencart.liveblog365.com/index.php?route=checkout/checkout&language=en-gb'
     }
 
     stages {
@@ -38,9 +50,6 @@ pipeline {
                         export XRAY_EXECUTION_DESCRIPTION="API execution imported from TAS"
                         export XRAY_PROJECT_KEY="${XRAY_PROJECT_KEY}"
 
-                        mvn exec:java \
-                          -Dexec.mainClass=com.fahym.tas.integrations.xray.XrayUploader \
-                          -Dexec.classpathScope=test
                     '''
                 }
             }
@@ -71,19 +80,7 @@ pipeline {
                 withCredentials([
                     string(credentialsId: 'login-password', variable: 'LOGIN_PASSWORD'),
                     string(credentialsId: 'login-email', variable: 'LOGIN_EMAIL'),
-                    string(credentialsId: 'login-new-password', variable: 'LOGIN_NEW_PASSWORD'),
-
-                    string(credentialsId: 'login-url', variable: 'LOGIN'),
-                    string(credentialsId: 'forgotten-url', variable: 'FORGOTTEN'),
-                    string(credentialsId: 'register-url', variable: 'REGISTER'),
-
-                    string(credentialsId: 'account-url', variable: 'ACCOUNT'),
-                    string(credentialsId: 'edit-account-url', variable: 'EDIT_ACCOUNT'),
-                    string(credentialsId: 'change-password-url', variable: 'CHANGE_PASSWORD'),
-                    string(credentialsId: 'logout-url', variable: 'LOGOUT'),
-
-                    string(credentialsId: 'home-page-url', variable: 'HOME_PAGE'),
-                    string(credentialsId: 'checkout-url', variable: 'CHECKOUT')
+                    string(credentialsId: 'login-new-password', variable: 'LOGIN_NEW_PASSWORD')
                 ]) {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                         sh '''
@@ -129,9 +126,7 @@ pipeline {
                             export XRAY_EXECUTION_SUMMARY='TAS UI Smoke Run'
                             export XRAY_EXECUTION_DESCRIPTION='UI execution imported from TAS'
 
-                            mvn exec:java \
-                              -Dexec.mainClass=com.fahym.tas.integrations.xray.XrayUploader \
-                              -Dexec.classpathScope=test
+                        
                           "
                     '''
                 }
