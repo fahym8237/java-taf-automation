@@ -6,11 +6,7 @@ pipeline {
     }
 
     environment {
-<<<<<<< HEAD
-        XRAY_PROJECT_KEY = 'JAV'
-=======
         XRAY_PROJECT_KEY = 'JAS'
->>>>>>> 89e0acc (release: OpenCart UI automation v2.1.1)
 
         LOGIN = 'https://opencart.liveblog365.com/index.php?route=account/login&language=en-gb'
         FORGOTTEN = 'https://opencart.liveblog365.com/index.php?route=account/forgotten&language=en-gb'
@@ -35,37 +31,28 @@ pipeline {
         }
 
         stage('API Tests') {
-            agent {
-                docker {
-                    image 'maven:3.9.9-eclipse-temurin-24'
-                    args '-v $HOME/.m2:/root/.m2'
-                    reuseNode true
-                }
-            }
+		    agent {
+		        docker {
+		            image 'maven:3.9.9-eclipse-temurin-24'
+		            args '--entrypoint="" -v $HOME/.m2:/root/.m2'
+		            reuseNode true
+		        }
+		    }
 
-            steps {
-                sh 'mvn clean test -Papi'
+		    steps {
+		        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+		            sh 'mvn clean test -Papi'
+		        }
+		    }
 
-                withCredentials([
-                    string(credentialsId: 'xray-client-id', variable: 'XRAY_CLIENT_ID'),
-                    string(credentialsId: 'xray-client-secret', variable: 'XRAY_CLIENT_SECRET')
-                ]) {
-                    sh '''
-                        export XRAY_EXECUTION_SUMMARY="TAS API Smoke Run"
-                        export XRAY_EXECUTION_DESCRIPTION="API execution imported from TAS"
-                        export XRAY_PROJECT_KEY="${XRAY_PROJECT_KEY}"
-
-                    '''
-                }
-            }
-
-            post {
-                always {
-                    stash name: 'api-surefire', includes: 'target/surefire-reports/**/*.xml', allowEmpty: true
-                    stash name: 'api-allure', includes: 'target/allure-results/**', allowEmpty: true
-                }
-            }
-        }
+		    post {
+		        always {
+		            stash name: 'api-surefire', includes: 'target/surefire-reports/**/*.xml', allowEmpty: true
+		            stash name: 'api-allure', includes: 'target/allure-results/**', allowEmpty: true
+		            archiveArtifacts artifacts: 'target/api/**/*.json,target/allure-results/**', allowEmptyArchive: true
+		        }
+		    }
+		}
 
         stage('UI Tests') {
             steps {
@@ -107,7 +94,7 @@ pipeline {
                               -e HOME_PAGE="$HOME_PAGE" \
                               -e CHECKOUT="$CHECKOUT" \
                               maven:3.9.9-eclipse-temurin-24 \
-                              mvn clean test -Pui,remote \
+                              mvn clean test -Psuite,remote \
                                 -Dremote.url=http://selenium-chrome:4444/wd/hub
                         '''
                     }
@@ -131,7 +118,7 @@ pipeline {
                             export XRAY_EXECUTION_SUMMARY='TAS UI Smoke Run'
                             export XRAY_EXECUTION_DESCRIPTION='UI execution imported from TAS'
 
-                        
+
                           "
                     '''
                 }
@@ -146,22 +133,22 @@ pipeline {
         }
 
         stage('Publish Reports') {
-            steps {
-                unstash 'api-surefire'
-                unstash 'api-allure'
-                unstash 'ui-surefire'
-                unstash 'ui-allure'
+		    steps {
+		        unstash 'api-surefire'
+		        unstash 'api-allure'
+		        unstash 'ui-surefire'
+		        unstash 'ui-allure'
 
-                junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
+		        junit testResults: 'target/surefire-reports/**/*.xml', allowEmptyResults: true
 
-                allure([
-                    includeProperties: false,
-                    jdk: '',
-                    commandline: 'allure',
-                    results: [[path: 'target/allure-results']]
-                ])
-            }
-        }
+		        allure([
+		            includeProperties: false,
+		            jdk: '',
+		            commandline: 'allure',
+		            results: [[path: 'target/allure-results']]
+		        ])
+		    }
+		}
     }
 
     post {
