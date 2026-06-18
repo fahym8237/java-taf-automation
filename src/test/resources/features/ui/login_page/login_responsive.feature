@@ -4,7 +4,7 @@ Feature: OpenCart Authentication - Login Page Responsive Layout
   I want the login page to remain usable across screen sizes
   So that I can log in from desktop, tablet, and mobile devices
 
-  @JAV-LPR-001 @desktop @REQ-LPR-001
+  @JAS-109 @JAV-LPR-001 @desktop @REQ-LPR-001
   Scenario: Login page displays correctly on desktop
     Given the user opens the OpenCart login page
     When the user sets the browser viewport to desktop size
@@ -12,7 +12,7 @@ Feature: OpenCart Authentication - Login Page Responsive Layout
     And the login page form should remain usable
     And the login page primary elements should be visible
 
-  @JAV-LPR-002 @tablet @REQ-LPR-002
+  @JAS-110 @JAV-LPR-002 @tablet @REQ-LPR-002
   Scenario: Login page displays correctly on tablet
     Given the user opens the OpenCart login page
     When the user sets the browser viewport to tablet size
@@ -20,7 +20,7 @@ Feature: OpenCart Authentication - Login Page Responsive Layout
     And the login page form should remain usable
     And the login page primary elements should be visible
 
-  @JAV-LPR-003 @mobile @REQ-LPR-003
+  @JAS-111 @JAV-LPR-003 @mobile @REQ-LPR-003
   Scenario: Login page displays correctly on mobile
     Given the user opens the OpenCart login page
     When the user sets the browser viewport to mobile size

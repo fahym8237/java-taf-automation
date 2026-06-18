@@ -4,6 +4,7 @@ Feature: Restful-Booker Booking CRUD
   I want to validate booking CRUD operations
   So that API wrappers + domain + test data work end-to-end
 
+  @JAS-1
   Scenario: Create, retrieve, update, patch, and delete a booking
     Given the API client is configured
     And an auth token is available

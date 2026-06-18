@@ -7,16 +7,16 @@ Feature: OpenCart Authentication - Register Page Security
   Background:
     Given the user opens the OpenCart register page
 
-  @JAV-RPS-001 @security @REQ-RPS-001
+  @JAS-142 @JAV-RPS-001 @security @REQ-RPS-001
   Scenario: Register page is served over HTTPS
     Then the register page URL should use HTTPS
 
-  @JAV-RPS-002 @security @REQ-RPS-002
+  @JAS-126 @JAV-RPS-002 @security @REQ-RPS-002
   Scenario: Password field masks entered value on register page
     When the user fills the registration form with a generated valid user
     Then the password field should mask the entered value on register page
 
-  @JAV-RPS-003 @security @negative @REQ-RPS-003
+  @JAS-140 @JAV-RPS-003 @security @negative @REQ-RPS-003
   Scenario: Register form safely handles malicious input
     When the user enters malicious first name input on register page
     And the user enters malicious last name input on register page
@@ -26,7 +26,7 @@ Feature: OpenCart Authentication - Register Page Security
     And the user submits the registration form
     Then the register page should remain stable
 
-  @JAV-RPS-004 @security @negative @REQ-RPS-004
+  @JAS-141 @JAV-RPS-004 @security @negative @REQ-RPS-004
   Scenario: Register form safely handles very long values
     When the user enters a very long first name on register page
     And the user enters a very long last name on register page
@@ -36,7 +36,7 @@ Feature: OpenCart Authentication - Register Page Security
     And the user submits the registration form
     Then the register page should remain stable
 
-  @JAV-RPS-005 @security @REQ-RPS-005
+  @JAS-143 @JAV-RPS-005 @security @REQ-RPS-005
   Scenario: Privacy policy must be accepted before registration
     When the user fills the registration form with a generated valid user
     And the user submits the registration form

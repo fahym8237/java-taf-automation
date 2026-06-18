@@ -8,11 +8,11 @@ Feature: OpenCart Account - Edit Account Security
     Given the user is logged in to edit account
     And the user navigates to the edit account page
 
-  @JAV-EAS-001 @security @REQ-EAS-001
+  @JAS-57 @JAV-EAS-001 @security @REQ-EAS-001
   Scenario: Edit account page is served over HTTPS
     Then the edit account page URL should use HTTPS
 
-  @JAV-EAS-002 @security @negative @REQ-EAS-002
+  @JAS-55 @JAV-EAS-002 @security @negative @REQ-EAS-002
   Scenario: Edit account form safely handles malicious input
     When the user enters malicious first name input on edit account page
     And the user enters malicious last name input on edit account page
@@ -20,7 +20,7 @@ Feature: OpenCart Account - Edit Account Security
     And the user submits the edit account form
     Then the edit account page should remain stable
 
-  @JAV-EAS-003 @security @negative @REQ-EAS-003
+  @JAS-58 @JAV-EAS-003 @security @negative @REQ-EAS-003
   Scenario: Edit account form safely handles very long values
     When the user enters a very long first name on edit account page
     And the user enters a very long last name on edit account page
@@ -28,7 +28,7 @@ Feature: OpenCart Account - Edit Account Security
     And the user submits the edit account form
     Then the edit account page should remain stable
 
-  @JAV-EAS-004 @security @access_control @REQ-EAS-004
+  @JAS-120 @JAV-EAS-004 @security @access_control @REQ-EAS-004
   Scenario: Unauthenticated user cannot access edit account page directly
     Given the user is not authenticated
     When the user tries to open the OpenCart edit account page directly

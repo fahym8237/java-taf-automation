@@ -8,21 +8,21 @@ Feature: OpenCart Account - Change Password Responsive Layout
     Given the user is logged in
     And the user navigates to the change password page
 
-  @JAV-CPR-001 @desktop @REQ-CPR-001
+  @JAS-20 @JAV-CPR-001 @desktop @REQ-CPR-001
   Scenario: Change password page displays correctly on desktop
     When the user sets the browser viewport to desktop size on change password page
     Then the OpenCart change password page should be loaded
     And the change password form should remain usable
     And the change password page primary elements should be visible
 
-  @JAV-CPR-002 @tablet @REQ-CPR-002
+  @JAS-19 @JAV-CPR-002 @tablet @REQ-CPR-002
   Scenario: Change password page displays correctly on tablet
     When the user sets the browser viewport to tablet size on change password page
     Then the OpenCart change password page should be loaded
     And the change password form should remain usable
     And the change password page primary elements should be visible
 
-  @JAV-CPR-003 @mobile @REQ-CPR-003
+  @JAS-18 @JAV-CPR-003 @mobile @REQ-CPR-003
   Scenario: Change password page displays correctly on mobile
     When the user sets the browser viewport to mobile size on change password page
     Then the OpenCart change password page should be loaded

@@ -13,7 +13,7 @@ import java.util.UUID;
 public final class XrayUploader {
 
     private static final String IMPORT_URL =
-            "https://xray.cloud.getxray.app/api/v2/import/execution/cucumber/multipart";
+            "https://eu.xray.cloud.getxray.app/api/v2/import/execution/cucumber/multipart";
 
     public static void main(String[] args) throws Exception {
         XrayConfig cfg = XrayConfig.fromEnv(args);

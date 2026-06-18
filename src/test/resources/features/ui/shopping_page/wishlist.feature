@@ -8,14 +8,14 @@ Feature: OpenCart Shopping - Wishlist
     Given the user is logged in
     And the user opens the OpenCart home page
 
-  @JAV-WISH-001 @smoke @REQ-WISH-001
+  @JAS-168 @JAV-WISH-001 @smoke @REQ-WISH-001
   Scenario: Add MacBook Pro to wishlist from search results
     When the user searches for "MacBook"
     And the user adds product "MacBook Pro" to the wishlist from search results
     Then the wishlist counter should be updated
     And a wishlist success message should be displayed
 
-  @JAV-WISH-002 @wishlist @REQ-WISH-002
+  @JAS-172 @JAV-WISH-002 @wishlist @REQ-WISH-002
   Scenario: Verify My Wishlist page after adding product
     When the user searches for "MacBook"
     And the user adds product "MacBook Pro" to the wishlist from search results
@@ -25,7 +25,7 @@ Feature: OpenCart Shopping - Wishlist
     And the wishlist product model should be displayed
     
 
-  @JAV-WISH-003 @wishlist @REQ-WISH-003
+  @JAS-171 @JAV-WISH-003 @wishlist @REQ-WISH-003
   Scenario: Add wishlist product to cart
     When the user searches for "MacBook"
     And the user adds product "MacBook Pro" to the wishlist from search results
@@ -33,7 +33,7 @@ Feature: OpenCart Shopping - Wishlist
     And the user adds wishlist product "MacBook Pro" to the cart
     Then the cart should contain product "MacBook Pro" from wishlist flow
 
-  @JAV-WISH-004 @wishlist @REQ-WISH-004
+  @JAS-169 @JAV-WISH-004 @wishlist @REQ-WISH-004
   Scenario: Remove product from wishlist
     When the user searches for "MacBook"
     And the user adds product "MacBook Pro" to the wishlist from search results
@@ -41,7 +41,7 @@ Feature: OpenCart Shopping - Wishlist
     And the user removes product "MacBook Pro" from wishlist
     Then the wishlist should not contain product "MacBook Pro"
 
-  @JAV-WISH-005 @access_control @REQ-WISH-005
+  @JAS-170 @JAV-WISH-005 @access_control @REQ-WISH-005
   Scenario: Unauthenticated user is redirected or warned when adding product to wishlist
     Given the user is not authenticated
     And the user opens the OpenCart home page

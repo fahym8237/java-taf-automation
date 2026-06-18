@@ -7,7 +7,7 @@ Feature: OpenCart Authentication - Register Page Session Management
   Background:
     Given the user opens the OpenCart register page
 
-  @JAV-RPSE-001 @session @stability @REQ-RPSE-001
+  @JAS-147 @JAV-RPSE-001 @session @stability @REQ-RPSE-001
   Scenario: Refresh register page
     When the user refreshes the register page
     Then the OpenCart register page should be loaded
@@ -17,14 +17,14 @@ Feature: OpenCart Authentication - Register Page Session Management
     And the email field should be empty on register page
     And the password field should be empty on register page
 
-  @JAV-RPSE-002 @session @navigation @REQ-RPSE-002
+  @JAS-146 @JAV-RPSE-002 @session @navigation @REQ-RPSE-002
   Scenario: Browser back and forward keeps register page stable
     When the user clicks the login link on register page
     Then the OpenCart login page should be loaded from register flow
     When the user navigates back in the browser from login to register page
     Then the OpenCart register page should be loaded
 
-  @JAV-RPSE-003 @session @stability @REQ-RPSE-003
+  @JAS-148 @JAV-RPSE-003 @session @stability @REQ-RPSE-003
   Scenario: Reopen register page after leaving it
     When the user clicks the login link on register page
     Then the OpenCart login page should be loaded from register flow
@@ -32,7 +32,7 @@ Feature: OpenCart Authentication - Register Page Session Management
     Then the OpenCart register page should be loaded
     And the register form should remain usable
 
-  @JAV-RPSE-004 @session @positive @REQ-RPSE-004
+  @JAS-145 @JAV-RPSE-004 @session @positive @REQ-RPSE-004
   Scenario: Successful registration reaches the account creation success flow
     When the user fills the registration form with a generated valid user
     And the user agrees to the privacy policy

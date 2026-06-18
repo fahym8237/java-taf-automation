@@ -9,7 +9,7 @@ Feature: OpenCart Shopping - Checkout
     And the user opens the OpenCart home page
     And the cart contains product "MacBook Air"
 
-  @JAV-CHK-001 @smoke @REQ-CHK-001
+  @JAS-153 @JAV-CHK-001 @smoke @REQ-CHK-001
   Scenario: Open checkout page from shopping cart
     When the user opens the shopping cart page
     And the user clicks checkout
@@ -18,7 +18,7 @@ Feature: OpenCart Shopping - Checkout
 	And the user select I want to use a new address
     And the shipping address section should be displayed
 
-  @JAV-CHK-002 @checkout @REQ-CHK-002
+  @JAS-150 @JAV-CHK-002 @checkout @REQ-CHK-002
   Scenario: Verify checkout page required shipping fields
     When the user opens the checkout page
 	And the user select I want to use a new address
@@ -30,14 +30,14 @@ Feature: OpenCart Shopping - Checkout
     And the shipping country dropdown should be displayed
     And the shipping region dropdown should be displayed
 
-  @JAV-CHK-003 @checkout @negative @REQ-CHK-003
+  @JAS-151 @JAV-CHK-003 @checkout @negative @REQ-CHK-003
   Scenario: Submit checkout shipping address with empty required fields
     When the user opens the checkout page
 	And the user select I want to use a new address
     And the user submits the empty shipping address form
     Then shipping address validation errors should be displayed
 
-  @JAV-CHK-004 @checkout @positive @REQ-CHK-004
+  @JAS-152 @JAV-CHK-004 @checkout @positive @REQ-CHK-004
   Scenario: Fill checkout shipping address with valid data
     When the user opens the checkout page
 	And the user select I want to use a new address
@@ -45,7 +45,7 @@ Feature: OpenCart Shopping - Checkout
     And the user saves the shipping address
     Then the shipping address should be accepted
 
-  @JAV-CHK-005 @access_control @REQ-CHK-005
+  @JAS-154 @JAV-CHK-005 @access_control @REQ-CHK-005
   Scenario: Unauthenticated user cannot access checkout directly
     Given the user is not authenticated
     When the user opens the checkout page directly

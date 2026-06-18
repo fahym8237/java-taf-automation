@@ -7,21 +7,21 @@ Feature: OpenCart Authentication - Forgotten Password Session Management
   Background:
     Given the user opens the OpenCart forgotten password page
 
-  @JAV-FPSE-001 @session @stability @REQ-FPSE-001
+  @JAS-86 @JAV-FPSE-001 @session @stability @REQ-FPSE-001
   Scenario: Refresh forgotten password page
     When the user refreshes the forgotten password page
     Then the OpenCart forgotten password page should be loaded
     And the forgotten password form should remain usable
     And the email field should be empty on forgotten password page
 
-  @JAV-FPSE-002 @session @navigation @REQ-FPSE-002
+  @JAS-89 @JAV-FPSE-002 @session @navigation @REQ-FPSE-002
   Scenario: Browser back and forward keeps forgotten password page stable
     When the user clicks the back button on forgotten password page
     Then the OpenCart login page should be loaded
     When the user navigates back in the browser from login to forgotten password page
     Then the OpenCart forgotten password page should be loaded
 
-  @JAV-FPSE-003 @session @stability @REQ-FPSE-003
+  @JAS-87 @JAV-FPSE-003 @session @stability @REQ-FPSE-003
   Scenario: Reopen forgotten password page after leaving it
     When the user clicks the back button on forgotten password page
     Then the OpenCart login page should be loaded
@@ -29,7 +29,7 @@ Feature: OpenCart Authentication - Forgotten Password Session Management
     Then the OpenCart forgotten password page should be loaded
     And the forgotten password form should remain usable
 
-  @JAV-FPSE-004 @session @public_access @REQ-FPSE-004
+  @JAS-88 @JAV-FPSE-004 @session @public_access @REQ-FPSE-004
   Scenario: Direct access to forgotten password page remains available
     When the user opens the OpenCart forgotten password page again
     Then the OpenCart forgotten password page should be loaded

@@ -8,21 +8,21 @@ Feature: OpenCart Account - Edit Account Responsive Layout
     Given the user is logged in to edit account
     And the user navigates to the edit account page
 
-  @JAV-EAR-001 @desktop @REQ-EAR-001
+  @JAS-52 @JAV-EAR-001 @desktop @REQ-EAR-001
   Scenario: Edit account page displays correctly on desktop
     When the user sets the browser viewport to desktop size on edit account page
     Then the OpenCart edit account page should be loaded
     And the edit account form should remain usable
     And the edit account page primary elements should be visible
 
-  @JAV-EAR-002 @tablet @REQ-EAR-002
+  @JAS-53 @JAV-EAR-002 @tablet @REQ-EAR-002
   Scenario: Edit account page displays correctly on tablet
     When the user sets the browser viewport to tablet size on edit account page
     Then the OpenCart edit account page should be loaded
     And the edit account form should remain usable
     And the edit account page primary elements should be visible
 
-  @JAV-EAR-003 @mobile @REQ-EAR-003
+  @JAS-51 @JAV-EAR-003 @mobile @REQ-EAR-003
   Scenario: Edit account page displays correctly on mobile
     When the user sets the browser viewport to mobile size on edit account page
     Then the OpenCart edit account page should be loaded

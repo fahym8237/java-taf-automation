@@ -7,24 +7,24 @@ Feature: OpenCart Authentication - Forgotten Password Security
   Background:
     Given the user opens the OpenCart forgotten password page
 
-  @JAV-FPS-001 @security @REQ-FPS-001
+  @JAS-81 @JAV-FPS-001 @security @REQ-FPS-001
   Scenario: Forgotten password page is served over HTTPS
     Then the forgotten password page URL should use HTTPS
 
-  @JAV-FPS-002 @security @negative @REQ-FPS-002
+  @JAS-83 @JAV-FPS-002 @security @negative @REQ-FPS-002
   Scenario: Forgotten password form safely handles malicious email input
     When the user enters malicious email input on forgotten password page
     And the user submits the forgotten password form
     Then the forgotten password page should remain stable
     And no JavaScript alert should be displayed on forgotten password page
 
-  @JAV-FPS-003 @security @negative @REQ-FPS-003
+  @JAS-82 @JAV-FPS-003 @security @negative @REQ-FPS-003
   Scenario: Forgotten password form safely handles very long email input
     When the user enters a very long email on forgotten password page
     And the user submits the forgotten password form
     Then the forgotten password page should remain stable
 
-  @JAV-FPS-004 @security @stability @REQ-FPS-004
+  @JAS-84 @JAV-FPS-004 @security @stability @REQ-FPS-004
   Scenario: Repeated forgotten password submissions are handled safely
     When the user submits the forgotten password form multiple times with unregistered email
     Then the forgotten password page should remain stable

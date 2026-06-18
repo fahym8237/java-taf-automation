@@ -8,21 +8,21 @@ Feature: OpenCart Account - Change Password Security
     Given the user is logged in
     And the user navigates to the change password page
 
-  @JAV-CPS-001 @security @REQ-CPS-001
+  @JAS-22 @JAV-CPS-001 @security @REQ-CPS-001
   Scenario: Password field masks entered value
     When the user enters a valid new password on change password page
     Then the password field should mask the entered value on change password page
 
-  @JAV-CPS-002 @security @REQ-CPS-002
+  @JAS-24 @JAV-CPS-002 @security @REQ-CPS-002
   Scenario: Confirm password field masks entered value
     When the user enters the same confirm password on change password page
     Then the confirm password field should mask the entered value on change password page
 
-  @JAV-CPS-003 @security @REQ-CPS-003
+  @JAS-26 @JAV-CPS-003 @security @REQ-CPS-003
   Scenario: Change password page is served over HTTPS
     Then the change password page URL should use HTTPS
 
-  @JAV-CPS-004 @security @negative @REQ-CPS-004
+  @JAS-23 @JAV-CPS-004 @security @negative @REQ-CPS-004
   Scenario: Password change form safely handles malicious input
     When the user enters malicious password input on change password page
     And the user enters malicious confirm input on change password page
@@ -30,7 +30,7 @@ Feature: OpenCart Account - Change Password Security
     Then the change password page should remain stable
     And no JavaScript alert should be displayed on change password page
 
-  @JAV-CPS-005 @security @access_control @REQ-CPS-005
+  @JAS-116 @JAV-CPS-005 @security @access_control @REQ-CPS-005
   Scenario: Unauthenticated user cannot access change password page directly
     Given the user is not authenticated
     When the user tries to open the OpenCart change password page directly

@@ -7,7 +7,7 @@ Feature: OpenCart Authentication - Forgotten Password
   Background:
     Given the user opens the OpenCart forgotten password page
 
-  @JAV-FP-001 @smoke @REQ-FP-001
+  @JAS-69 @JAV-FP-001 @smoke @REQ-FP-001
   Scenario: Forgotten password page is displayed correctly
     Then the OpenCart forgotten password page should be loaded
     And the forgotten password instruction text should be displayed
@@ -15,30 +15,30 @@ Feature: OpenCart Authentication - Forgotten Password
     And the continue button should be displayed on forgotten password page
     And the back button should be displayed on forgotten password page
 
-  @JAV-FP-002 @positive @REQ-FP-002
+  @JAS-68 @JAV-FP-002 @positive @REQ-FP-002
   Scenario: Submit forgotten password request with registered email
     When the user enters a registered email on forgotten password page
     And the user submits the forgotten password form
     Then the forgotten password request should be accepted
 
-  @JAV-FP-003 @negative @REQ-FP-003
+  @JAS-66 @JAV-FP-003 @negative @REQ-FP-003
   Scenario: Submit forgotten password form without email
     When the user submits the forgotten password form without email
     Then the email validation error should be displayed on forgotten password page
 
-  @JAV-FP-004 @negative @REQ-FP-004
+  @JAS-64 @JAV-FP-004 @negative @REQ-FP-004
   Scenario: Submit forgotten password form with unregistered email
     When the user enters an unregistered email on forgotten password page
     And the user submits the forgotten password form
     Then the email validation error should be displayed on forgotten password page
 
-  @JAV-FP-005 @negative @REQ-FP-005
+  @JAS-65 @JAV-FP-005 @negative @REQ-FP-005
   Scenario: Submit forgotten password form with invalid email format
     When the user enters an invalid email on forgotten password page
     And the user submits the forgotten password form
     Then the email validation error should be displayed on forgotten password page
 
-  @JAV-FP-006 @navigation @REQ-FP-006
+  @JAS-67 @JAV-FP-006 @navigation @REQ-FP-006
   Scenario: User navigates back to login page from forgotten password page
     When the user clicks the back button on forgotten password page
     Then the OpenCart login page should be loaded

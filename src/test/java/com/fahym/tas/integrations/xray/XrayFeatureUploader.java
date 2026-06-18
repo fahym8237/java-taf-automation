@@ -14,7 +14,7 @@ import java.util.zip.ZipOutputStream;
 
 public final class XrayFeatureUploader {
 
-    private static final String XRAY_BASE = "https://xray.cloud.getxray.app";
+    private static final String XRAY_BASE = "https://eu.xray.cloud.getxray.app";
     private static final String AUTH_URL = XRAY_BASE + "/api/v2/authenticate";
 
     public static void main(String[] args) throws Exception {
